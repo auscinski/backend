@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,27 +52,16 @@ class Person
      */
     private int $state;
 
-     /**
-     *
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="person")
-     * @ORM\JoinTable(name="person_like_product",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="person_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     *   }
-     * )
+    /**
+     * @ORM\OneToMany(targetEntity="PersonLikeProduct", mappedBy="person")
      */
-    private Collection $product;
-
+    private $personLikeProducts;
 
     private string $stateName;
 
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,33 +117,6 @@ class Person
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getProduct(): Collection
-    {
-        return $this->product;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        $this->product->removeElement($product);
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getStateName(): ?string
     {
         return $this->stateName;
@@ -169,8 +130,9 @@ class Person
         $this->stateName = $stateName;
     }
 
-
-
-
+    public function __toString(): string
+    {
+        return $this->getFName() . " " . $this->getLName();
+    }
 
 }

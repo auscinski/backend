@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PersonLikeProduct{% endblock %}
+
+{% block body %}
+    <h1>PersonLikeProduct</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Person</th>
+                <th>Product</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for person_like_product in person_like_products %}
+            <tr>
+                <td>{{ person_like_product.person }}</td>
+                <td>{{ person_like_product.product }}</td>
+                <td>
+                    <a href="{{ path('person_like_product_show', {'person_id': person_like_product.person.id,'product_id': person_like_product.product.id}) }}">show</a>
+                    <a href="{{ path('person_like_product_edit', {'person_id': person_like_product.person.id,'product_id': person_like_product.product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="1">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('person_like_product_new') }}">Create new</a>
+{% endblock %}

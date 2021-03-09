@@ -44,18 +44,17 @@ class Product
      */
     private DateTime $publicDate;
 
+
     /**
-     *
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="PersonLikeProduct", mappedBy="product")
      */
-    private Collection $person;
+    private $personLikeProducts;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->person = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,31 +98,9 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getPerson(): Collection
+    public function __toString(): string
     {
-        return $this->person;
-    }
-
-    public function addPerson(Person $person): self
-    {
-        if (!$this->person->contains($person)) {
-            $this->person[] = $person;
-            $person->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removePerson(Person $person): self
-    {
-        if ($this->person->removeElement($person)) {
-            $person->removeProduct($this);
-        }
-
-        return $this;
+        return $this->getName();
     }
 
 }

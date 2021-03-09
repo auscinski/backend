@@ -17,7 +17,6 @@ class PersonType extends AbstractType
             ->add('login')
             ->add('lName')
             ->add('fName')
-            ->add('state')
             ->add('state', ChoiceType::class, [
                 'required' => true,
                 'multiple' => false,
