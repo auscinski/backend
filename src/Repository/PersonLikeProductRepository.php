@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\PersonLikeProduct;
+use App\Entity\Person;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,34 +21,26 @@ class PersonLikeProductRepository extends ServiceEntityRepository
         parent::__construct($registry, PersonLikeProduct::class);
     }
 
-    // /**
-    //  * @return CategoryProduct[] Returns an array of CategoryProduct objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getSearchClasses( $query_person=null, $query_product=null)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('p')
+            ->select('p')
+            ->innerJoin('p.person', 'pe')
+            ->innerJoin('p.product', 'pr');
+
+        if($query_person && $query_person !== '') {
+            $qb->where('pe.lName LIKE :query_person')
+                ->orWhere('pe.fName LIKE :query_person')
+                ->setParameter('query_person', '%' . $query_person . '%');
+        }
+
+        if($query_product && $query_product !== '') {
+            $qb->andwhere('pr.name LIKE :query_product')
+                ->setParameter('query_product', '%' . $query_product . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+
     }
-    */
-
-
-//    public function findOneBy([$person_id,$product_id]): ?PersonLikeProduct
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.person = :person_id')
-//            ->andWhere('p.product = :product_id')
-//            ->setParameter('person_id', $person_id)
-//            ->setParameter('product_id', $product_id)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 
 }

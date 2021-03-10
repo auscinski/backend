@@ -13,12 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class PersonController extends AbstractController
 {
     #[Route('', name: 'person')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $people = $this->getDoctrine()
-            ->getRepository(Person::class)
-            ->findAll();
+        $statusTitle = $request->query->get('statusTitle',null);
+        $query = $request->query->get('query',null);
 
+
+        $people = $this->getDoctrine()->getRepository(Person::class)->getSearchClasses($statusTitle,$query);
 
         $return = [];
         foreach ($people as $key => $person) {
@@ -30,6 +31,7 @@ class PersonController extends AbstractController
 
         return $this->render('person/index.html.twig', [
             'people' => $return,
+            'statuses' => Person::STATUSES,
         ]);
     }
 

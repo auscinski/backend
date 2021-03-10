@@ -13,11 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('', name: 'product')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $products = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findAll();
+        $query = $request->query->get('query',null);
+
+        $products = $this->getDoctrine()->getRepository(Product::class)->getSearchClasses( $query );
+
 
         return $this->render('product/index.html.twig', [
             'products' => $products,

@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Person;
 use App\Entity\PersonLikeProduct;
-use App\Entity\Product;
 use App\Form\PersonLikeProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class PersonLikeProductController extends AbstractController
 {
     #[Route('/', name: 'person_like_product', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $personLikeProducts = $this->getDoctrine()
-            ->getRepository(PersonLikeProduct::class)
-            ->findAll();
+        $query_person = $request->query->get('query_person',null);
+        $query_product = $request->query->get('query_product',null);
+
+        $personLikeProducts = $this->getDoctrine()->getRepository(PersonLikeProduct::class)
+            ->getSearchClasses( $query_person, $query_product );
 
         return $this->render('person_like_product/index.html.twig', [
             'person_like_products' => $personLikeProducts,

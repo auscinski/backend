@@ -5,6 +5,21 @@
 {% block body %}
     <h1>Person</h1>
 
+<form method="GET" action="{{ path('person') }}">
+    <label>
+        <input type="text" name="query" placeholder="Search Query...">
+    </label>
+    <label>
+        <select name="statusTitle">
+            <option value="-" >-</option>
+            {% for key, value in statuses %}
+            <option value="{{ value }}" >{{ key }}</option>
+         {% endfor %}
+        </select>
+    </label>
+    <input type="submit" class="btn btn-warning" value="Find">
+</form>
+
     <table class="table">
         <thead>
         <tr>

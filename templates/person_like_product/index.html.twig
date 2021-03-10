@@ -5,6 +5,17 @@
 {% block body %}
     <h1>PersonLikeProduct</h1>
 
+    <form method="GET" action="{{ path('person_like_product') }}">
+        <label>
+            <input type="text" name="query_person" placeholder="Search Query Person...">
+        </label>
+        <label>
+            <input type="text" name="query_product" placeholder="Search Query Product...">
+        </label>
+
+        <input type="submit" class="btn btn-warning" value="Find">
+    </form>
+
     <table class="table">
         <thead>
             <tr>

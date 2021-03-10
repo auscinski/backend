@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PersonLikeProductRepository")
  * @ORM\Table(name="person_like_product")
  * @UniqueEntity(
  *     fields={"person", "product"},
